@@ -40,7 +40,7 @@ const filterData = {
       "home-decoration"]
   }
 
-const FilterBar = ({setData,setCurrentPage }) => {
+const FilterBar = ({getProduct,setData,setCurrentPage ,setPrevUrl}) => {
     const [filter, setFilter] = useState();
     const [hideFilter, setHideFilter] = useState(true);
 
@@ -54,8 +54,7 @@ const FilterBar = ({setData,setCurrentPage }) => {
         <button onClick={()=>setFilter('category')} style={filter === 'category' ? { color: `rgb(112, 201, 112)` } : { color: 'black'}}>Category</button>
         <button onClick={()=>setFilter('price')} style={filter === 'price' ? { color: `rgb(112, 201, 112)` } : { color: 'black'}}>Price</button>
         </div>
-        <FilterCard setData = {setData} setFilter = {setFilter} hideFilter= {hideFilter} setHideFilter = {setHideFilter} filter = {filter} setCurrentPage = {setCurrentPage} filterData = {filter === 'brand' ? filterData.brand : filterData.category}/>
-
+        <FilterCard getProduct = {getProduct} setPrevUrl = {setPrevUrl} setData = {setData} setFilter = {setFilter} hideFilter= {hideFilter} setHideFilter = {setHideFilter} filter = {filter} setCurrentPage = {setCurrentPage} filterData = {filter === 'brand' ? filterData.brand : filterData.category}/>
     </div>
 
    </>

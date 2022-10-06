@@ -8,11 +8,11 @@ export const Home = () => {
   const [data, setData] = useState([]);
   const [maxPage, setmaxPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-
-
-  const getProduct = async (page) => {
+  const[prevUrl,setPrevUrl] = useState(`https://localhost:7165/page?page=`);
+  
+  const getProduct = async (page,url) => {
     try{
-    const response = await fetch(`https://localhost:7165/page?page=${page}`);
+    const response = await fetch(url);
     const res = await response.json();
     setData(res.products);
     setmaxPage(Math.ceil(res.total / 10));
@@ -23,10 +23,9 @@ export const Home = () => {
       };
   }
 
- 
-
   useEffect(() => {
-   getProduct(1);
+   getProduct(1,`https://localhost:7165/page?page=${1}`);
+   console.log(prevUrl);
   }, []);
 
   let cards;
@@ -51,9 +50,9 @@ export const Home = () => {
   return (
     <div className="App" >
       <h1 id="heading">CarWale Shooping App</h1>
-      <FilterBar setData = {setData} setCurrentPage = {setCurrentPage} />
+      <FilterBar setData = {setData} setCurrentPage = {setCurrentPage} getProduct = {getProduct} setPrevUrl = {setPrevUrl}/>
       <div className="card-wrapper">{cards}</div>
-      <Pagination maxPage = {maxPage} getProduct = {getProduct} currentPage = {currentPage}  setCurrentPage = {setCurrentPage} />
+      <Pagination prevUrl = {prevUrl} maxPage = {maxPage} getProduct = {getProduct} currentPage = {currentPage}  setCurrentPage = {setCurrentPage} />
     </div>
   );
 };

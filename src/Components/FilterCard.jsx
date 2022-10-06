@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const FilterCard = ({ filterData,setFilter,setData,filter,hideFilter,setHideFilter,setCurrentPage}) => {
+const FilterCard = ({ getProduct,filterData,setFilter,setData,filter,hideFilter,setHideFilter,setCurrentPage,setPrevUrl}) => {
   //const [activeFilter, setactiveFilter] = useState(filter);
   const [brandF, setbrandF] = useState("");
   const [categoryF, setCategoryF] = useState("");
   const [minPrice,setminPrice] = useState(0);
-  const [maxPrice,setmaxPrice] = useState(100000);
+  const [maxPrice,setmaxPrice] = useState(10000);
 
   const reference = useRef();
 
@@ -34,19 +34,37 @@ const FilterCard = ({ filterData,setFilter,setData,filter,hideFilter,setHideFilt
        console.log("min" + minPrice)
        if(fetch){
        getFilterdProducts(currentFilters);
-      setCurrentPage(1);
+       setCurrentPage(1);
       }
+  }
+
+  const getQuery = (brand,category) =>{
+    if(brand.length > 0){
+      brand = "brand=" + brand.substring(0,brand.length - 1) + "&";
+     } else brand = "brand=null&";
+    if(category.length > 0){
+      category = "category=" + category.substring(0,category.length - 1) + "&";
+    }
+    else category = "category=null&";
+     let page = 1;
+    setPrevUrl(`https://localhost:7165/filter?${brand}${category}minprice=${minPrice}&maxprice=${maxPrice}&page=`);
+
+    let url = `https://localhost:7165/filter?${brand}${category}minprice=${minPrice}&maxprice=${maxPrice}&page=${page}`;
+return url;
   }
 
   const getFilterdProducts = async (currentFilters) => {
     let brand  = filter === 'brand' ? currentFilters:brandF;
     let category  = filter === 'category' ? currentFilters:categoryF;
 
-    let url = `https://localhost:7165/filter?brand=${brand.length > 0 ? brand.substring(0,brand.length - 1):"none"}&category=${category.length > 0 ? category.substring(0,category.length - 1):"none"}&minprice=${minPrice}&maxprice=${maxPrice}`;
-    const response = await fetch(url);
-    const res = await response.json();
-    setData(res.products);
-    console.log(url ,res);
+    let url = getQuery(brand,category);
+    console.log(url);
+    getProduct(1,url);
+
+    // const response = await fetch(url);
+    // const res = await response.json();
+    // setData(res.products);
+    // console.log(url ,res);
   }
 
   return (

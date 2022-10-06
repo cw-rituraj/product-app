@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "../App.css"
 
-const Pagination = ({maxPage,getProduct,currentPage,setCurrentPage}) => {
+const Pagination = ({maxPage,getProduct,currentPage,setCurrentPage,prevUrl}) => {
 
   const onNext = () => {
     onPageChange(currentPage + 1);
@@ -14,7 +14,9 @@ const Pagination = ({maxPage,getProduct,currentPage,setCurrentPage}) => {
   const onPageChange = (page) =>{
     if(maxPage >= page && page > 0){
     setCurrentPage(page);
-    getProduct(page);
+    let url = prevUrl + page;
+    console.log(url);
+    getProduct(page,url);
     window.scrollTo(0, 0);
     }
     console.log(currentPage);
